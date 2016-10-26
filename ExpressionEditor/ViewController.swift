@@ -12,11 +12,13 @@ class ViewController: UIViewController {
     let textEditor = UITextView(frame: CGRect())
     let resultsPane = UIView(frame: CGRect())
     let statusBarView = UIView(frame: CGRect())
-
+    let button = UIButton(type: .system)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTextEditorLayout()
         configureResultsPaneLayout()
+        configureButton()
     }
     
     func configureTextEditorLayout() {
@@ -58,9 +60,69 @@ class ViewController: UIViewController {
         NSLayoutConstraint(item: resultsPane, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 0.3, constant: 0).isActive = true
         NSLayoutConstraint(item: resultsPane, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 2.0, constant: 0).isActive = true
     }
+    
+    func configureButton() {
+        button.setTitle("Execute", for: .normal)
+        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        textEditor.addSubview(button)
+        NSLayoutConstraint(item: button, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 0.5, constant: 0).isActive = true
+        NSLayoutConstraint(item: button, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 0.3, constant: 0).isActive = true
+    }
+    
+    func buttonTapped() {
+        process()
+    }
+    
+    func process() {
+        resultsPane.subviews.forEach {
+            $0.removeFromSuperview()
+        }
+        
+        print(textEditor.layoutManager.textContainers)
+        let glyphRange = textEditor.layoutManager.glyphRange(for: textEditor.layoutManager.textContainers.first!)
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        //Find positional info for the text and add the label to the gray view.
+        var labels = [UILabel]()
+        textEditor.layoutManager.enumerateLineFragments(forGlyphRange: glyphRange) { (firstRect, secondRect, container, range, bool) in
+            if let r = range.toRange() {
+                let start = self.textEditor.text.utf16.index(self.textEditor.text.utf16.startIndex, offsetBy: r.lowerBound)
+                let end = self.textEditor.text.utf16.index(self.textEditor.text.utf16.startIndex, offsetBy: r.upperBound)
+                let substringRange = start..<end
+                let string = self.textEditor.text.utf16[substringRange].description
+               
+                if let input = self.process(input: string) {
+                    let rect = secondRect.offsetBy(dx: 10, dy: 0)
+                    let view = UILabel(frame: rect)
+                    view.font = .systemFont(ofSize: 8)
+                    view.text = input
+                    view.backgroundColor = .randomColor()
+                    labels.append(view)
+                }
+            }
+        }
+        
+        labels.forEach {
+            resultsPane.addSubview($0)
+        }
+    }
+    
+    // This function will serve as the entrance point for the parser.
+    func process(input: String) -> String? {
+        if !input.isEmpty && input != "\n" {
+            return input
+        } else {
+            return nil
+        }
+    }
+}
+
+public extension UIColor {
+    static func randomColor() -> UIColor {
+        let colors: [UIColor] = [.red, .blue, .green, .gray, .cyan, .yellow, .orange, .purple, .brown]
+        let randomIndex = Int(arc4random() % UInt32(colors.count))
+        
+        return colors[randomIndex]
     }
 }
