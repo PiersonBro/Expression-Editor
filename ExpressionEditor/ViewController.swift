@@ -13,12 +13,20 @@ class ViewController: UIViewController {
     let resultsPane = UIView(frame: CGRect())
     let statusBarView = UIView(frame: CGRect())
     let button = UIButton(type: .system)
-    
+    var drag: UIPanGestureRecognizer? = nil
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTextEditorLayout()
         configureResultsPaneLayout()
         configureButton()
+        configureDragGestureRecognizer()
+    }
+   
+    func configureDragGestureRecognizer() {
+        let SEL = #selector(dragResultsView(gestureReocognizer:))
+        drag = UIPanGestureRecognizer(target: self, action: SEL)
+        view.addGestureRecognizer(drag!)
     }
     
     func configureTextEditorLayout() {
@@ -35,10 +43,15 @@ class ViewController: UIViewController {
         resultsPane.layer.cornerRadius = 15.0
     }
     
+    var origin = CGPoint()
+    
     override func viewDidLayoutSubviews() {
         textEditor.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
         resultsPane.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
         configureStatusBarView()
+        print(resultsPane.frame)
+        print("------")
+        origin = CGPoint(x: 653.0, y: 20.0)
     }
     
     func configureStatusBarView() {
@@ -51,14 +64,20 @@ class ViewController: UIViewController {
         statusBarView.topAnchor.constraint(equalTo: topLayoutGuide.topAnchor).isActive = true
     }
     
+    
     func configureResultsPaneLayout() {
         view.addSubview(resultsPane)
         resultsPane.translatesAutoresizingMaskIntoConstraints = false
         resultsPane.backgroundColor = .gray
 
         resultsPane.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
-        NSLayoutConstraint(item: resultsPane, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 0.3, constant: 0).isActive = true
-        NSLayoutConstraint(item: resultsPane, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 2.0, constant: 0).isActive = true
+        let widthConstraint = NSLayoutConstraint(item: resultsPane, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 0.3, constant: 0)
+        widthConstraint.isActive = true
+        widthConstraint.identifier = "widthRP"
+        
+        let centerXConstriant = NSLayoutConstraint(item: resultsPane, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 2.0, constant: 0)
+        centerXConstriant.isActive = true
+        centerXConstriant.identifier = "centerXRP"
     }
     
     func configureButton() {
@@ -67,12 +86,71 @@ class ViewController: UIViewController {
         
         button.translatesAutoresizingMaskIntoConstraints = false
         textEditor.addSubview(button)
-        NSLayoutConstraint(item: button, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 0.5, constant: 0).isActive = true
-        NSLayoutConstraint(item: button, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 0.3, constant: 0).isActive = true
+        NSLayoutConstraint(item: button, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1.4, constant: 0).isActive = true
+        let constraint = NSLayoutConstraint(item: button, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 0.3, constant: 0)
+        constraint.identifier = "hello!"
+        constraint.isActive = true
     }
     
     func buttonTapped() {
+        view.constraints.filter {
+            $0.identifier == "widthRP" || $0.identifier == "centerXRP"
+        }.forEach {
+            view.removeConstraint($0)
+        }
+    
+        let widthConstraint = NSLayoutConstraint(item: resultsPane, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 1.5, constant: 0)
+            widthConstraint.isActive = true
+            widthConstraint.identifier = "widthRP"
+
+            UIView.animate(withDuration: 2) {
+                self.view.layoutIfNeeded()
+            }
         process()
+    }
+    
+    
+    var previousPoint = CGPoint()
+    var constraints = [NSLayoutConstraint]()
+    func dragResultsView(gestureReocognizer: UIPanGestureRecognizer) {
+        let p1 = gestureReocognizer.location(in: resultsPane)
+        let distance = p1.x - previousPoint.x
+        
+        switch gestureReocognizer.state {
+            case .began:
+                previousPoint = gestureReocognizer.location(in: resultsPane)
+                constraints = view.constraints.filter {
+                    $0.identifier == "widthRP" || $0.identifier == "centerXRP"
+                }
+                constraints.forEach {
+                    view.removeConstraint($0)
+                }
+
+            case .changed:
+                let calcDistance = resultsPane.frame.width + distance
+                resultsPane.frame = CGRect(origin: resultsPane.frame.origin, size: CGSize(width: calcDistance, height: resultsPane.frame.height))
+            case .ended:
+                let multiplier = (resultsPane.frame.width + distance) / view.frame.width
+                let widthConstraint = NSLayoutConstraint(item: resultsPane, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: multiplier, constant: 0)
+                widthConstraint.isActive = true
+                widthConstraint.identifier = "widthRP"
+            
+               constraints.filter {
+                    $0.identifier == "centerXRP"
+                }.forEach {
+                    view.addConstraint($0)
+                }
+        
+                UIView.animate(withDuration: 0) {
+                    self.view.layoutIfNeeded()
+                }
+                process()
+            
+            default:
+                return
+        }
+        
+        previousPoint = p1
     }
     
     func process() {
@@ -80,7 +158,6 @@ class ViewController: UIViewController {
             $0.removeFromSuperview()
         }
         
-        print(textEditor.layoutManager.textContainers)
         let glyphRange = textEditor.layoutManager.glyphRange(for: textEditor.layoutManager.textContainers.first!)
 
         //Find positional info for the text and add the label to the gray view.
@@ -94,7 +171,8 @@ class ViewController: UIViewController {
                
                 if let input = self.process(input: string) {
                     let rect = secondRect.offsetBy(dx: 10, dy: 0)
-                    let view = UILabel(frame: rect)
+                    let finalRect = CGRect(x: rect.origin.x, y: rect.origin.y, width: self.resultsPane.bounds.width, height: rect.size.height)
+                    let view = UILabel(frame: finalRect)
                     view.font = .systemFont(ofSize: 8)
                     view.text = input
                     view.backgroundColor = .randomColor()
