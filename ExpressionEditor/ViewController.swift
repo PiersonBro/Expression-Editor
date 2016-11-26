@@ -127,10 +127,12 @@ class ViewController: UIViewController {
                 }
 
             case .changed:
-                let calcDistance = resultsPane.frame.width + distance
+//                let calcDistance = resultsPane.frame.width + distance
+                let calcDistance = view.frame.width - (resultsPane.frame.width + distance)
+                print(calcDistance)
                 resultsPane.frame = CGRect(origin: resultsPane.frame.origin, size: CGSize(width: calcDistance, height: resultsPane.frame.height))
             case .ended:
-                let multiplier = (resultsPane.frame.width + distance) / view.frame.width
+                let multiplier = (view.frame.width - (resultsPane.frame.width + distance)) / view.frame.width
                 let widthConstraint = NSLayoutConstraint(item: resultsPane, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: multiplier, constant: 0)
                 widthConstraint.isActive = true
                 widthConstraint.identifier = "widthRP"
