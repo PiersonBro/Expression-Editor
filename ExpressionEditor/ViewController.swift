@@ -24,7 +24,7 @@ class ViewController: UIViewController {
     }
    
     func configureDragGestureRecognizer() {
-        let SEL = #selector(dragResultsView(gestureReocognizer:))
+        let SEL = #selector(dragResultsView(gestureRecognizer:))
         drag = UIPanGestureRecognizer(target: self, action: SEL)
         view.addGestureRecognizer(drag!)
     }
@@ -43,15 +43,10 @@ class ViewController: UIViewController {
         resultsPane.layer.cornerRadius = 15.0
     }
     
-    var origin = CGPoint()
-    
     override func viewDidLayoutSubviews() {
         textEditor.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
         resultsPane.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
         configureStatusBarView()
-        print(resultsPane.frame)
-        print("------")
-        origin = CGPoint(x: 653.0, y: 20.0)
     }
     
     func configureStatusBarView() {
@@ -64,7 +59,6 @@ class ViewController: UIViewController {
         statusBarView.topAnchor.constraint(equalTo: topLayoutGuide.topAnchor).isActive = true
     }
     
-    
     func configureResultsPaneLayout() {
         view.addSubview(resultsPane)
         resultsPane.translatesAutoresizingMaskIntoConstraints = false
@@ -75,7 +69,7 @@ class ViewController: UIViewController {
         widthConstraint.isActive = true
         widthConstraint.identifier = "widthRP"
         
-        let centerXConstriant = NSLayoutConstraint(item: resultsPane, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 2.0, constant: 0)
+        let centerXConstriant = NSLayoutConstraint(item: resultsPane, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1.7, constant: 0)
         centerXConstriant.isActive = true
         centerXConstriant.identifier = "centerXRP"
     }
@@ -93,55 +87,65 @@ class ViewController: UIViewController {
     }
     
     func buttonTapped() {
-        view.constraints.filter {
-            $0.identifier == "widthRP" || $0.identifier == "centerXRP"
-        }.forEach {
-            view.removeConstraint($0)
-        }
-    
-        let widthConstraint = NSLayoutConstraint(item: resultsPane, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 1.5, constant: 0)
-            widthConstraint.isActive = true
-            widthConstraint.identifier = "widthRP"
-
-            UIView.animate(withDuration: 2) {
-                self.view.layoutIfNeeded()
-            }
         process()
     }
     
-    
     var previousPoint = CGPoint()
-    var constraints = [NSLayoutConstraint]()
-    func dragResultsView(gestureReocognizer: UIPanGestureRecognizer) {
-        let p1 = gestureReocognizer.location(in: resultsPane)
-        let distance = p1.x - previousPoint.x
+    func dragResultsView(gestureRecognizer: UIPanGestureRecognizer) {
+        let p1 = gestureRecognizer.location(in: resultsPane)
+        let distance: CGFloat = { () -> CGFloat in
+            let magnitude = abs(p1.x - previousPoint.x)
+            let vector: CGFloat
+            if gestureRecognizer.velocity(in: resultsPane).x > 0 {
+                vector = magnitude
+            } else {
+                vector = -(magnitude)
+            }
+            return vector
+        }()
+        var origin = resultsPane.frame.origin
+
         
-        switch gestureReocognizer.state {
+        switch gestureRecognizer.state {
             case .began:
-                previousPoint = gestureReocognizer.location(in: resultsPane)
-                constraints = view.constraints.filter {
+                previousPoint = gestureRecognizer.location(in: resultsPane)
+            
+                /*constraints = view.constraints.filter {
                     $0.identifier == "widthRP" || $0.identifier == "centerXRP"
                 }
                 constraints.forEach {
                     view.removeConstraint($0)
-                }
-
+                }*/
             case .changed:
-//                let calcDistance = resultsPane.frame.width + distance
-                let calcDistance = view.frame.width - (resultsPane.frame.width + distance)
-                print(calcDistance)
-                resultsPane.frame = CGRect(origin: resultsPane.frame.origin, size: CGSize(width: calcDistance, height: resultsPane.frame.height))
+                let calcDistance = resultsPane.frame.width - distance
+                origin.x = origin.x + distance
+                
+                resultsPane.frame = CGRect(origin: origin, size: CGSize(width: calcDistance, height: resultsPane.frame.height))
             case .ended:
-                let multiplier = (view.frame.width - (resultsPane.frame.width + distance)) / view.frame.width
-                let widthConstraint = NSLayoutConstraint(item: resultsPane, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: multiplier, constant: 0)
+               let calcDistance = resultsPane.frame.width - distance
+                origin.x = origin.x + distance
+                
+                resultsPane.frame = CGRect(origin: origin, size: CGSize(width: calcDistance, height: resultsPane.frame.height))
+               
+                view.constraints.filter {
+                    $0.identifier == "widthRP" || $0.identifier == "centerXRP"
+                }.forEach {
+                        view.removeConstraint($0)
+                }
+            
+                let rect = resultsPane.convert(resultsPane.frame, to: view)
+                let multiplier = (rect.width / view.frame.width) + 0.0001302083333
+
+               let widthConstraint = NSLayoutConstraint(item: resultsPane, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: multiplier, constant: 0)
                 widthConstraint.isActive = true
                 widthConstraint.identifier = "widthRP"
-            
-               constraints.filter {
-                    $0.identifier == "centerXRP"
-                }.forEach {
-                    view.addConstraint($0)
-                }
+             
+                let point = resultsPane.convert(origin, to: view)
+                let xMultiplier = (point.x / view.frame.maxX) + 0.3002604167
+
+                let centerXConstriant = NSLayoutConstraint(item: resultsPane, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: xMultiplier, constant: 0)
+                centerXConstriant.isActive = true
+                centerXConstriant.identifier = "centerXRP"
         
                 UIView.animate(withDuration: 0) {
                     self.view.layoutIfNeeded()
