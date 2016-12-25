@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		202C2E401E0F478C0068CB52 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202C2E3F1E0F478C0068CB52 /* Team.swift */; };
+		202C2E421E0F47CB0068CB52 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202C2E411E0F47CB0068CB52 /* SwiftyJSON.swift */; };
+		202C2E441E0F59C20068CB52 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202C2E431E0F59C20068CB52 /* Game.swift */; };
+		202C2E461E0F59CB0068CB52 /* Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202C2E451E0F59CB0068CB52 /* Subject.swift */; };
+		202C2E481E0F59E70068CB52 /* Criterion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202C2E471E0F59E70068CB52 /* Criterion.swift */; };
+		202C2E4A1E0F59FA0068CB52 /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202C2E491E0F59FA0068CB52 /* Property.swift */; };
+		202C2E4C1E0F8E640068CB52 /* HTMLStripper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202C2E4B1E0F8E640068CB52 /* HTMLStripper.swift */; };
+		202C2E4E1E0F8F020068CB52 /* StringScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202C2E4D1E0F8F020068CB52 /* StringScore.swift */; };
 		209BE38D1DB8429F00352C3B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209BE38C1DB8429F00352C3B /* AppDelegate.swift */; };
 		209BE38F1DB8429F00352C3B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209BE38E1DB8429F00352C3B /* ViewController.swift */; };
 		209BE3941DB8429F00352C3B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 209BE3931DB8429F00352C3B /* Assets.xcassets */; };
@@ -25,6 +33,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		202C2E3F1E0F478C0068CB52 /* Team.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
+		202C2E411E0F47CB0068CB52 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
+		202C2E431E0F59C20068CB52 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		202C2E451E0F59CB0068CB52 /* Subject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Subject.swift; sourceTree = "<group>"; };
+		202C2E471E0F59E70068CB52 /* Criterion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Criterion.swift; sourceTree = "<group>"; };
+		202C2E491E0F59FA0068CB52 /* Property.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Property.swift; sourceTree = "<group>"; };
+		202C2E4B1E0F8E640068CB52 /* HTMLStripper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTMLStripper.swift; sourceTree = "<group>"; };
+		202C2E4D1E0F8F020068CB52 /* StringScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringScore.swift; sourceTree = "<group>"; };
 		209BE3891DB8429F00352C3B /* ExpressionEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExpressionEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		209BE38C1DB8429F00352C3B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		209BE38E1DB8429F00352C3B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -76,6 +92,14 @@
 			isa = PBXGroup;
 			children = (
 				209BE38C1DB8429F00352C3B /* AppDelegate.swift */,
+				202C2E4D1E0F8F020068CB52 /* StringScore.swift */,
+				202C2E4B1E0F8E640068CB52 /* HTMLStripper.swift */,
+				202C2E3F1E0F478C0068CB52 /* Team.swift */,
+				202C2E431E0F59C20068CB52 /* Game.swift */,
+				202C2E471E0F59E70068CB52 /* Criterion.swift */,
+				202C2E491E0F59FA0068CB52 /* Property.swift */,
+				202C2E451E0F59CB0068CB52 /* Subject.swift */,
+				202C2E411E0F47CB0068CB52 /* SwiftyJSON.swift */,
 				209BE38E1DB8429F00352C3B /* ViewController.swift */,
 				209BE3931DB8429F00352C3B /* Assets.xcassets */,
 				209BE3951DB8429F00352C3B /* LaunchScreen.storyboard */,
@@ -197,8 +221,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				202C2E481E0F59E70068CB52 /* Criterion.swift in Sources */,
+				202C2E401E0F478C0068CB52 /* Team.swift in Sources */,
+				202C2E441E0F59C20068CB52 /* Game.swift in Sources */,
 				209BE38F1DB8429F00352C3B /* ViewController.swift in Sources */,
 				209BE38D1DB8429F00352C3B /* AppDelegate.swift in Sources */,
+				202C2E4E1E0F8F020068CB52 /* StringScore.swift in Sources */,
+				202C2E461E0F59CB0068CB52 /* Subject.swift in Sources */,
+				202C2E4C1E0F8E640068CB52 /* HTMLStripper.swift in Sources */,
+				202C2E4A1E0F59FA0068CB52 /* Property.swift in Sources */,
+				202C2E421E0F47CB0068CB52 /* SwiftyJSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
