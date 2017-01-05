@@ -28,9 +28,7 @@ struct Subject {
                 } else {
                     ambiguousTeams = teams
                 }
-            }
-            
-            if let property = Property(property: word), propertyNeedle == nil {
+            } else if let property = Property(property: word), propertyNeedle == nil {
                 propertyNeedle = property
             } else {
                 criterionWords.append((word, meaning))

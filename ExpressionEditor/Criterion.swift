@@ -18,6 +18,7 @@ enum Grammer: String {
     case Particle
     case OtherWord
     case Dash
+    case Determiner
 }
 
 struct Criterion {
