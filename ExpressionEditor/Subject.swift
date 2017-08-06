@@ -20,7 +20,8 @@ struct Subject {
         var propertyNeedle: Property? = nil
         var ambiguousTeams = [Team]()
         
-        words.forEach { word, meaning -> Void in
+        words.forEach { (arg) -> Void in
+            let (word, meaning) = arg
             if let teams = Team.getTeam(fromInput: word, teams: teams), teamNeedle == nil && ambiguousTeams.count == 0  {
                 if teams.count == 1 {
                     teamNeedle = teams.first!
@@ -70,7 +71,6 @@ struct Subject {
             completionHandler("Error: Ambiguous Input")
             return
         }
-        
         
         completionHandler(property.execute(team: team, criterion: criterion!))
     }

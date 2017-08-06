@@ -12,15 +12,23 @@ class ViewController: UIViewController {
     let textEditor = UITextView(frame: CGRect())
     let resultsPane = UIView(frame: CGRect())
     let statusBarView = UIView(frame: CGRect())
-    let button = UIButton(type: .system)
     var drag: UIPanGestureRecognizer? = nil
-
+    var teams = [Team]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTextEditorLayout()
         configureResultsPaneLayout()
-        configureButton()
         configureDragGestureRecognizer()
+        loadTeamsData()
+    }
+    //FIXME: Factor this out.
+    func loadTeamsData() {
+        Team.fetchTeams() { teams in
+            DispatchQueue.main.sync {
+                self.teams = teams
+            }
+        }
     }
    
     func configureDragGestureRecognizer() {
@@ -65,38 +73,20 @@ class ViewController: UIViewController {
         resultsPane.backgroundColor = .gray
 
         resultsPane.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
-        let widthConstraint = NSLayoutConstraint(item: resultsPane, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 0.3, constant: 0)
-        widthConstraint.isActive = true
-        widthConstraint.identifier = "widthRP"
-        
+        let rightAnchor = resultsPane.rightAnchor.constraint(equalTo: view.rightAnchor)
+        rightAnchor.isActive = true
         let centerXConstriant = NSLayoutConstraint(item: resultsPane, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1.7, constant: 0)
         centerXConstriant.isActive = true
         centerXConstriant.identifier = "centerXRP"
     }
     
-    func configureButton() {
-        button.setTitle("Execute", for: .normal)
-        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-        
-        button.translatesAutoresizingMaskIntoConstraints = false
-        textEditor.addSubview(button)
-        NSLayoutConstraint(item: button, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1.4, constant: 0).isActive = true
-        let constraint = NSLayoutConstraint(item: button, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 0.3, constant: 0)
-        constraint.identifier = "hello!"
-        constraint.isActive = true
-    }
-    
-    func buttonTapped() {
-        process()
-    }
-    
     var previousPoint = CGPoint()
-    func dragResultsView(gestureRecognizer: UIPanGestureRecognizer) {
+    @objc func dragResultsView(gestureRecognizer: UIPanGestureRecognizer) {
         let p1 = gestureRecognizer.location(in: resultsPane)
         let distance: CGFloat = { () -> CGFloat in
-            let magnitude = abs(p1.x - previousPoint.x)
+            let magnitude = abs(p1.x - self.previousPoint.x)
             let vector: CGFloat
-            if gestureRecognizer.velocity(in: resultsPane).x > 0 {
+            if gestureRecognizer.velocity(in: self.resultsPane).x > 0 {
                 vector = magnitude
             } else {
                 vector = -(magnitude)
@@ -109,48 +99,30 @@ class ViewController: UIViewController {
         switch gestureRecognizer.state {
             case .began:
                 previousPoint = gestureRecognizer.location(in: resultsPane)
-            
-                /*constraints = view.constraints.filter {
-                    $0.identifier == "widthRP" || $0.identifier == "centerXRP"
-                }
-                constraints.forEach {
-                    view.removeConstraint($0)
-                }*/
             case .changed:
-                let calcDistance = resultsPane.frame.width - distance
                 origin.x = origin.x + distance
                 
-                resultsPane.frame = CGRect(origin: origin, size: CGSize(width: calcDistance, height: resultsPane.frame.height))
+                resultsPane.frame = CGRect(origin: origin, size: CGSize(width: resultsPane.frame.height, height: resultsPane.frame.height))
             case .ended:
-               let calcDistance = resultsPane.frame.width - distance
-                origin.x = origin.x + distance
-                
-                resultsPane.frame = CGRect(origin: origin, size: CGSize(width: calcDistance, height: resultsPane.frame.height))
-               
-                view.constraints.filter {
-                    $0.identifier == "widthRP" || $0.identifier == "centerXRP"
-                }.forEach {
-                        view.removeConstraint($0)
-                }
-            
-                let rect = resultsPane.convert(resultsPane.frame, to: view)
-                let multiplier = (rect.width / view.frame.width) + 0.0001302083333
-
-               let widthConstraint = NSLayoutConstraint(item: resultsPane, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: multiplier, constant: 0)
-                widthConstraint.isActive = true
-                widthConstraint.identifier = "widthRP"
-             
-                let point = resultsPane.convert(origin, to: view)
-                let xMultiplier = (point.x / view.frame.maxX) + 0.3002604167
-
-                let centerXConstriant = NSLayoutConstraint(item: resultsPane, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: xMultiplier, constant: 0)
-                centerXConstriant.isActive = true
-                centerXConstriant.identifier = "centerXRP"
-        
                 UIView.animate(withDuration: 0) {
+                    self.view.constraints.filter {
+                        $0.identifier == "centerXRP"
+                    }.forEach {
+                            self.view.removeConstraint($0)
+                    }
+              
+                    origin.x = origin.x + distance
+                
+                    self.resultsPane.frame = CGRect(origin: origin, size: CGSize(width: self.resultsPane.frame.height, height: self.resultsPane.frame.height))
+                    let point = self.resultsPane.convert(self.resultsPane.bounds, to: self.view)
+                    let xMultiplier = (point.origin.x / self.view.frame.maxX) + 0.9998047352
+
+                    let centerXConstriant = NSLayoutConstraint(item: self.resultsPane, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: xMultiplier, constant: 0)
+                    centerXConstriant.isActive = true
+                    centerXConstriant.identifier = "centerXRP"
                     self.view.layoutIfNeeded()
+                    self.process()
                 }
-                process()
             
             default:
                 return
@@ -169,7 +141,7 @@ class ViewController: UIViewController {
         //Find positional info for the text and add the label to the gray view.
         var labels = [UILabel]()
         textEditor.layoutManager.enumerateLineFragments(forGlyphRange: glyphRange) { (firstRect, secondRect, container, range, bool) in
-            if let r = range.toRange() {
+            if let r = Range(range) {
                 let start = self.textEditor.text.utf16.index(self.textEditor.text.utf16.startIndex, offsetBy: r.lowerBound)
                 let end = self.textEditor.text.utf16.index(self.textEditor.text.utf16.startIndex, offsetBy: r.upperBound)
                 let substringRange = start..<end
@@ -192,19 +164,75 @@ class ViewController: UIViewController {
         }
     }
     
-    // This function will serve as the entrance point for the parser.
-    func process(input: String) -> String? {
-        if !input.isEmpty && input != "\n" {
-            return input
-        } else {
+    func sanatize(_ string: String) -> String? {
+        if string.isEmpty || string == "\n" {
             return nil
         }
+        
+        return string
+    }
+    
+    func parse(_ data: String) -> String? {
+        guard var data = sanatize(data) else {
+            return nil
+        }
+        
+        guard self.teams.isEmpty != true else {
+            return nil
+        }
+        
+        //FIXME: Have a more general solution to this problem.
+        if let range = data.range(of: "+") {
+            data.insert(" ", at: range.lowerBound)
+        } else if let range = data.range(of: "-") {
+            data.insert(" ", at: range.lowerBound)
+        }
+        
+        let strings = data.components(separatedBy: " ")
+        let tags = data.linguisticTags(in: data.startIndex..<data.endIndex, scheme: NSLinguisticTagScheme.lexicalClass.rawValue, options: .omitWhitespace, orthography: nil)
+        
+        let words = zip(strings, tags).flatMap { (arg) -> Criterion.Word? in
+            
+            let (word, tag) = arg
+            if let grammer = Grammer(rawValue: tag) {
+                return (word, grammer)
+            } else {
+                return nil
+            }
+        }
+        
+        if let subject = Subject(words: words, teams: teams) {
+            var string = ""
+            subject.execute() { result in
+                string = result
+            }
+            return string
+        } else {
+            return "Error: Could Not Read Input."
+            
+        }
+    }
+    
+    var parsedInputs: [String: String?] = [:]
+    
+    // This function will serve as the entrance point for the parser.
+    func process(input: String) -> String? {
+        // If we have already parsed this result return it, otherwise parse.
+        let parsedInput: String?
+        if let storedValue = parsedInputs[input] {
+            parsedInput = storedValue
+        } else {
+            parsedInput = parse(input)
+            parsedInputs[input] = parsedInput
+        }
+        
+        return parsedInput
     }
 }
 
 public extension UIColor {
     static func randomColor() -> UIColor {
-        let colors: [UIColor] = [.red, .blue, .green, .gray, .cyan, .yellow, .orange, .purple, .brown]
+        let colors: [UIColor] = [.red, .green, .cyan, .yellow, .orange, .purple, .brown]
         let randomIndex = Int(arc4random() % UInt32(colors.count))
         
         return colors[randomIndex]

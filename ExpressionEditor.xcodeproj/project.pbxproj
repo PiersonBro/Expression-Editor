@@ -20,6 +20,7 @@
 		209BE3941DB8429F00352C3B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 209BE3931DB8429F00352C3B /* Assets.xcassets */; };
 		209BE3971DB8429F00352C3B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 209BE3951DB8429F00352C3B /* LaunchScreen.storyboard */; };
 		209BE3A21DB8429F00352C3B /* ExpressionEditorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209BE3A11DB8429F00352C3B /* ExpressionEditorTests.swift */; };
+		20C3EF0A1E7D968D00C75805 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C3EF091E7D968D00C75805 /* Action.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,7 @@
 		209BE39D1DB8429F00352C3B /* ExpressionEditorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExpressionEditorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		209BE3A11DB8429F00352C3B /* ExpressionEditorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpressionEditorTests.swift; sourceTree = "<group>"; };
 		209BE3A31DB8429F00352C3B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		20C3EF091E7D968D00C75805 /* Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +95,7 @@
 			children = (
 				209BE38C1DB8429F00352C3B /* AppDelegate.swift */,
 				209BE38E1DB8429F00352C3B /* ViewController.swift */,
+				20C3EF091E7D968D00C75805 /* Action.swift */,
 				202C2E4D1E0F8F020068CB52 /* StringScore.swift */,
 				202C2E4B1E0F8E640068CB52 /* HTMLStripper.swift */,
 				202C2E3F1E0F478C0068CB52 /* Team.swift */,
@@ -162,17 +165,19 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0800;
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = EandZ;
 				TargetAttributes = {
 					209BE3881DB8429F00352C3B = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = R2HR4QQ5DH;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
 					209BE39C1DB8429F00352C3B = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = R2HR4QQ5DH;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 209BE3881DB8429F00352C3B;
 					};
@@ -222,6 +227,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				202C2E481E0F59E70068CB52 /* Criterion.swift in Sources */,
+				20C3EF0A1E7D968D00C75805 /* Action.swift in Sources */,
 				202C2E401E0F478C0068CB52 /* Team.swift in Sources */,
 				202C2E441E0F59C20068CB52 /* Game.swift in Sources */,
 				209BE38F1DB8429F00352C3B /* ViewController.swift in Sources */,
@@ -273,7 +279,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -281,7 +289,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
@@ -324,7 +336,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -332,7 +346,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
@@ -368,7 +386,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.EZTech.ExpressionEditor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -381,7 +400,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.EZTech.ExpressionEditor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -395,7 +415,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.EZTech.ExpressionEditorTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ExpressionEditor.app/ExpressionEditor";
 			};
 			name = Debug;
@@ -410,7 +431,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.EZTech.ExpressionEditorTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ExpressionEditor.app/ExpressionEditor";
 			};
 			name = Release;

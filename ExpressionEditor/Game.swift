@@ -32,12 +32,12 @@ struct Game {
         line.removeSubrange(line.startIndex...line.range(of: ".")!.upperBound)
         
         let dateRange = line.range(of: ",")!
-        date = line[line.startIndex..<dateRange.lowerBound]
+        date = String(line[line.startIndex..<dateRange.lowerBound])
         line.removeSubrange(line.startIndex...dateRange.upperBound)
         
         let recordRangeBegin = line.range(of: "(")!
         let recordRangeEnd = line.range(of: ")")!
-        record = line[recordRangeBegin.upperBound..<recordRangeEnd.lowerBound]
+        record = String(line[recordRangeBegin.upperBound..<recordRangeEnd.lowerBound])
         line.removeSubrange(recordRangeBegin.lowerBound...recordRangeEnd.upperBound)
         
         if line.contains("lost to") {
@@ -50,12 +50,12 @@ struct Game {
         
         let ownerRange = line.range(of: " ")!
         let ownerString = line[line.startIndex..<ownerRange.lowerBound]
-        owner = Team.getTeam(fromInput: ownerString, teams: teams)!.first!
+        owner = Team.getTeam(fromInput: String(ownerString), teams: teams)!.first!
         line.removeSubrange(line.startIndex...ownerRange.lowerBound)
         
         let opponenetRange = line.range(of: ",")!
         let opponentString = line[line.startIndex..<opponenetRange.lowerBound]
-        opponenet = Team.getTeam(fromInput: opponentString, teams: teams)!.first!
+        opponenet = Team.getTeam(fromInput: String(opponentString), teams: teams)!.first!
         line.removeSubrange(line.startIndex...opponenetRange.upperBound)
         score = line
         let dashRange = line.range(of: "-")!
