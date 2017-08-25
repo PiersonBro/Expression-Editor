@@ -154,6 +154,7 @@ class ViewController: UIViewController {
                     view.font = .systemFont(ofSize: 8)
                     view.text = input
                     view.backgroundColor = .randomColor()
+                    view.backgroundColor = .gray
                     labels.append(view)
                 }
             }
@@ -213,28 +214,8 @@ class ViewController: UIViewController {
         }
     }
     
-    var parsedInputs: [String: String?] = [:]
-    
     // This function will serve as the entrance point for the parser.
     func process(input: String) -> String? {
-        // If we have already parsed this result return it, otherwise parse.
-        let parsedInput: String?
-        if let storedValue = parsedInputs[input] {
-            parsedInput = storedValue
-        } else {
-            parsedInput = parse(input)
-            parsedInputs[input] = parsedInput
-        }
-        
-        return parsedInput
-    }
-}
-
-public extension UIColor {
-    static func randomColor() -> UIColor {
-        let colors: [UIColor] = [.red, .green, .cyan, .yellow, .orange, .purple, .brown]
-        let randomIndex = Int(arc4random() % UInt32(colors.count))
-        
-        return colors[randomIndex]
+        return  parse(input)
     }
 }
