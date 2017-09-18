@@ -1,0 +1,3 @@
+[submodule "VascularKit"]
+	path = VascularKit
+	url = https://github.com/PiersonBro/VascularKit
