@@ -177,7 +177,7 @@ struct GameRecordAction: ActionType {
 protocol ResultType {
     //NOTE: This should be strongly typed, using keypaths.
     var properties: [String] { get }
-    var intialResult: String { get }
+    var initialResult: String { get }
 }
 
 protocol ActionType {
