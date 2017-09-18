@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VascularKit
 
 class ViewController: UIViewController {
     let textEditor = UITextView(frame: CGRect())
@@ -14,6 +15,7 @@ class ViewController: UIViewController {
     let statusBarView = UIView(frame: CGRect())
     var drag: UIPanGestureRecognizer? = nil
     var teams = [Team]()
+    var providerSupplier = ProviderSupplier()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,7 +23,15 @@ class ViewController: UIViewController {
         configureResultsPaneLayout()
         configureDragGestureRecognizer()
         loadTeamsData()
+        registerProviders()
     }
+    
+    func registerProviders() {
+        providerSupplier.register(type: MathProvider.self)
+        providerSupplier.register(type: DebugProvider.self)
+        //FIXME: Add Teams.
+    }
+    
     //FIXME: Factor this out.
     func loadTeamsData() {
         Team.fetchTeams() { teams in
@@ -131,6 +141,8 @@ class ViewController: UIViewController {
         previousPoint = p1
     }
     
+    var dragAdded = false
+    var labels = [UILabel]()
     func process() {
         resultsPane.subviews.forEach {
             $0.removeFromSuperview()
@@ -142,18 +154,18 @@ class ViewController: UIViewController {
         var labels = [UILabel]()
         textEditor.layoutManager.enumerateLineFragments(forGlyphRange: glyphRange) { (firstRect, secondRect, container, range, bool) in
             if let r = Range(range) {
-                let start = self.textEditor.text.utf16.index(self.textEditor.text.utf16.startIndex, offsetBy: r.lowerBound)
-                let end = self.textEditor.text.utf16.index(self.textEditor.text.utf16.startIndex, offsetBy: r.upperBound)
+                let start = self.textEditor.text.index(self.textEditor.text.startIndex, offsetBy: r.lowerBound)
+                let end = self.textEditor.text.index(self.textEditor.text.startIndex, offsetBy: r.upperBound)
                 let substringRange = start..<end
-                let string = self.textEditor.text.utf16[substringRange].description
+                let string = String(self.textEditor.text[substringRange])
                
-                if let input = self.process(input: string) {
+                if let input = self.parse(string) {
                     let rect = secondRect.offsetBy(dx: 10, dy: 0)
-                    let finalRect = CGRect(x: rect.origin.x, y: rect.origin.y, width: self.resultsPane.bounds.width, height: rect.size.height)
+                    let finalRect = CGRect(x: rect.origin.x, y: rect.origin.y, width: self.resultsPane.bounds.width, height: CGFloat(ceilf(Float(rect.size.height))))
                     let view = UILabel(frame: finalRect)
-                    view.font = .systemFont(ofSize: 8)
+                    view.font = .systemFont(ofSize: 15)
                     view.text = input
-                    view.backgroundColor = .randomColor()
+                    view.isUserInteractionEnabled = true
                     view.backgroundColor = .gray
                     labels.append(view)
                 }
@@ -162,6 +174,13 @@ class ViewController: UIViewController {
         
         labels.forEach {
             resultsPane.addSubview($0)
+        }
+        
+        if !dragAdded {
+            let dragInteraction = UIDragInteraction(delegate: self)
+            dragInteraction.allowsSimultaneousRecognitionDuringLift = true
+            resultsPane.addInteraction(dragInteraction)
+            dragAdded = true
         }
     }
     
@@ -172,8 +191,13 @@ class ViewController: UIViewController {
         
         return string
     }
-    
+    var results: [DataResult] = []
     func parse(_ data: String) -> String? {
+        let result = providerSupplier.parse(data)
+        return result?.initialResult
+    }
+    
+    /*func parse(_ data: String) -> String? {
         guard var data = sanatize(data) else {
             return nil
         }
@@ -212,10 +236,5 @@ class ViewController: UIViewController {
             return "Error: Could Not Read Input."
             
         }
-    }
-    
-    // This function will serve as the entrance point for the parser.
-    func process(input: String) -> String? {
-        return  parse(input)
-    }
+    }*/
 }

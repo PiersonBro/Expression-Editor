@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2010217C1F4CAFC700A9A62A /* DebugProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2010217B1F4CAFC700A9A62A /* DebugProvider.swift */; };
 		202C2E401E0F478C0068CB52 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202C2E3F1E0F478C0068CB52 /* Team.swift */; };
 		202C2E421E0F47CB0068CB52 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202C2E411E0F47CB0068CB52 /* SwiftyJSON.swift */; };
 		202C2E441E0F59C20068CB52 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202C2E431E0F59C20068CB52 /* Game.swift */; };
@@ -15,15 +16,40 @@
 		202C2E4A1E0F59FA0068CB52 /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202C2E491E0F59FA0068CB52 /* Property.swift */; };
 		202C2E4C1E0F8E640068CB52 /* HTMLStripper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202C2E4B1E0F8E640068CB52 /* HTMLStripper.swift */; };
 		202C2E4E1E0F8F020068CB52 /* StringScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202C2E4D1E0F8F020068CB52 /* StringScore.swift */; };
+		20303E6A1F38E4AA00EA1728 /* VascularKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 209853FF1F36A13100C41BB9 /* VascularKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		208CFFB21F3D9E60000162BD /* TeamProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208CFFB11F3D9E60000162BD /* TeamProvider.swift */; };
+		208CFFB51F3EE06E000162BD /* LabelDragInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208CFFB41F3EE06E000162BD /* LabelDragInteraction.swift */; };
 		209BE38D1DB8429F00352C3B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209BE38C1DB8429F00352C3B /* AppDelegate.swift */; };
 		209BE38F1DB8429F00352C3B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209BE38E1DB8429F00352C3B /* ViewController.swift */; };
 		209BE3941DB8429F00352C3B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 209BE3931DB8429F00352C3B /* Assets.xcassets */; };
 		209BE3971DB8429F00352C3B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 209BE3951DB8429F00352C3B /* LaunchScreen.storyboard */; };
 		209BE3A21DB8429F00352C3B /* ExpressionEditorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209BE3A11DB8429F00352C3B /* ExpressionEditorTests.swift */; };
 		20C3EF0A1E7D968D00C75805 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C3EF091E7D968D00C75805 /* Action.swift */; };
+		20EA5FE31F380AB6006C0198 /* VascularKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 209853FF1F36A13100C41BB9 /* VascularKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		20303E6B1F38E4AA00EA1728 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 209853F91F36A13100C41BB9 /* VascularKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 20C3EF141E7DA11900C75805;
+			remoteInfo = VascularKit;
+		};
+		209853FE1F36A13100C41BB9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 209853F91F36A13100C41BB9 /* VascularKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 20C3EF151E7DA11900C75805;
+			remoteInfo = VascularKit;
+		};
+		209854001F36A13100C41BB9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 209853F91F36A13100C41BB9 /* VascularKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 20C3EF1E1E7DA11900C75805;
+			remoteInfo = VascularKitTests;
+		};
 		209BE39E1DB8429F00352C3B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 209BE3811DB8429F00352C3B /* Project object */;
@@ -31,9 +57,31 @@
 			remoteGlobalIDString = 209BE3881DB8429F00352C3B;
 			remoteInfo = ExpressionEditor;
 		};
+		20EA5FDF1F380AB2006C0198 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 209853F91F36A13100C41BB9 /* VascularKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 20C3EF141E7DA11900C75805;
+			remoteInfo = VascularKit;
+		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		20303E6D1F38E4AA00EA1728 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				20303E6A1F38E4AA00EA1728 /* VascularKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		2010217B1F4CAFC700A9A62A /* DebugProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugProvider.swift; sourceTree = "<group>"; };
 		202C2E3F1E0F478C0068CB52 /* Team.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		202C2E411E0F47CB0068CB52 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		202C2E431E0F59C20068CB52 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
@@ -42,6 +90,9 @@
 		202C2E491E0F59FA0068CB52 /* Property.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Property.swift; sourceTree = "<group>"; };
 		202C2E4B1E0F8E640068CB52 /* HTMLStripper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTMLStripper.swift; sourceTree = "<group>"; };
 		202C2E4D1E0F8F020068CB52 /* StringScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringScore.swift; sourceTree = "<group>"; };
+		208CFFB11F3D9E60000162BD /* TeamProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamProvider.swift; sourceTree = "<group>"; };
+		208CFFB41F3EE06E000162BD /* LabelDragInteraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelDragInteraction.swift; sourceTree = "<group>"; };
+		209853F91F36A13100C41BB9 /* VascularKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = VascularKit.xcodeproj; path = VascularKit/VascularKit.xcodeproj; sourceTree = "<group>"; };
 		209BE3891DB8429F00352C3B /* ExpressionEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExpressionEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		209BE38C1DB8429F00352C3B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		209BE38E1DB8429F00352C3B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -59,6 +110,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20EA5FE31F380AB6006C0198 /* VascularKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,9 +124,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		209853FA1F36A13100C41BB9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				209853FF1F36A13100C41BB9 /* VascularKit.framework */,
+				209854011F36A13100C41BB9 /* VascularKitTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		209BE3801DB8429F00352C3B = {
 			isa = PBXGroup;
 			children = (
+				209853F91F36A13100C41BB9 /* VascularKit.xcodeproj */,
 				209BE38B1DB8429F00352C3B /* ExpressionEditor */,
 				209BE3A01DB8429F00352C3B /* ExpressionEditorTests */,
 				209BE38A1DB8429F00352C3B /* Products */,
@@ -93,9 +155,12 @@
 		209BE38B1DB8429F00352C3B /* ExpressionEditor */ = {
 			isa = PBXGroup;
 			children = (
+				2010217B1F4CAFC700A9A62A /* DebugProvider.swift */,
 				209BE38C1DB8429F00352C3B /* AppDelegate.swift */,
 				209BE38E1DB8429F00352C3B /* ViewController.swift */,
+				208CFFB41F3EE06E000162BD /* LabelDragInteraction.swift */,
 				20C3EF091E7D968D00C75805 /* Action.swift */,
+				208CFFB11F3D9E60000162BD /* TeamProvider.swift */,
 				202C2E4D1E0F8F020068CB52 /* StringScore.swift */,
 				202C2E4B1E0F8E640068CB52 /* HTMLStripper.swift */,
 				202C2E3F1E0F478C0068CB52 /* Team.swift */,
@@ -130,10 +195,13 @@
 				209BE3851DB8429F00352C3B /* Sources */,
 				209BE3861DB8429F00352C3B /* Frameworks */,
 				209BE3871DB8429F00352C3B /* Resources */,
+				20303E6D1F38E4AA00EA1728 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				20EA5FE01F380AB2006C0198 /* PBXTargetDependency */,
+				20303E6C1F38E4AA00EA1728 /* PBXTargetDependency */,
 			);
 			name = ExpressionEditor;
 			productName = ExpressionEditor;
@@ -194,6 +262,12 @@
 			mainGroup = 209BE3801DB8429F00352C3B;
 			productRefGroup = 209BE38A1DB8429F00352C3B /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 209853FA1F36A13100C41BB9 /* Products */;
+					ProjectRef = 209853F91F36A13100C41BB9 /* VascularKit.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				209BE3881DB8429F00352C3B /* ExpressionEditor */,
@@ -201,6 +275,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		209853FF1F36A13100C41BB9 /* VascularKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = VascularKit.framework;
+			remoteRef = 209853FE1F36A13100C41BB9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		209854011F36A13100C41BB9 /* VascularKitTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = VascularKitTests.xctest;
+			remoteRef = 209854001F36A13100C41BB9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		209BE3871DB8429F00352C3B /* Resources */ = {
@@ -228,11 +319,14 @@
 			files = (
 				202C2E481E0F59E70068CB52 /* Criterion.swift in Sources */,
 				20C3EF0A1E7D968D00C75805 /* Action.swift in Sources */,
+				2010217C1F4CAFC700A9A62A /* DebugProvider.swift in Sources */,
 				202C2E401E0F478C0068CB52 /* Team.swift in Sources */,
 				202C2E441E0F59C20068CB52 /* Game.swift in Sources */,
 				209BE38F1DB8429F00352C3B /* ViewController.swift in Sources */,
 				209BE38D1DB8429F00352C3B /* AppDelegate.swift in Sources */,
 				202C2E4E1E0F8F020068CB52 /* StringScore.swift in Sources */,
+				208CFFB51F3EE06E000162BD /* LabelDragInteraction.swift in Sources */,
+				208CFFB21F3D9E60000162BD /* TeamProvider.swift in Sources */,
 				202C2E461E0F59CB0068CB52 /* Subject.swift in Sources */,
 				202C2E4C1E0F8E640068CB52 /* HTMLStripper.swift in Sources */,
 				202C2E4A1E0F59FA0068CB52 /* Property.swift in Sources */,
@@ -251,10 +345,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		20303E6C1F38E4AA00EA1728 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = VascularKit;
+			targetProxy = 20303E6B1F38E4AA00EA1728 /* PBXContainerItemProxy */;
+		};
 		209BE39F1DB8429F00352C3B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 209BE3881DB8429F00352C3B /* ExpressionEditor */;
 			targetProxy = 209BE39E1DB8429F00352C3B /* PBXContainerItemProxy */;
+		};
+		20EA5FE01F380AB2006C0198 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = VascularKit;
+			targetProxy = 20EA5FDF1F380AB2006C0198 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -317,7 +421,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -368,7 +472,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -380,9 +484,11 @@
 		209BE3A71DB8429F00352C3B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = R2HR4QQ5DH;
 				INFOPLIST_FILE = ExpressionEditor/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.EZTech.ExpressionEditor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -394,9 +500,11 @@
 		209BE3A81DB8429F00352C3B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = R2HR4QQ5DH;
 				INFOPLIST_FILE = ExpressionEditor/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.EZTech.ExpressionEditor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
