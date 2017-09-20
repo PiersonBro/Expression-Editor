@@ -62,8 +62,8 @@ class ViewController: UIViewController {
     }
     
     override func viewDidLayoutSubviews() {
-        textEditor.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        resultsPane.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        textEditor.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
+        resultsPane.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
         configureStatusBarView()
     }
     
@@ -73,8 +73,8 @@ class ViewController: UIViewController {
         view.addSubview(statusBarView)
         statusBarView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         statusBarView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-        statusBarView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        statusBarView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        statusBarView.bottomAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
+        statusBarView.topAnchor.constraint(equalTo: topLayoutGuide.topAnchor).isActive = true
     }
     
     func configureResultsPaneLayout() {
