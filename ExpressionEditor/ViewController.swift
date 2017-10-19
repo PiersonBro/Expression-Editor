@@ -184,20 +184,20 @@ class ViewController: UIViewController {
         }
     }
     
-    func sanatize(_ string: String) -> String? {
-        if string.isEmpty || string == "\n" {
-            return nil
-        }
-        
-        return string
-    }
     var results: [DataResult] = []
     func parse(_ data: String) -> String? {
         let result = providerSupplier.parse(data)
         return result?.initialResult
     }
     
-    /*func parse(_ data: String) -> String? {
+    /*func sanatize(_ string: String) -> String? {
+     if string.isEmpty || string == "\n" {
+     return nil
+     }
+     
+     return string
+     }
+     func parse(_ data: String) -> String? {
         guard var data = sanatize(data) else {
             return nil
         }
