@@ -16,11 +16,11 @@ struct DebugProvider: DataProvider {
     
     func execute(criteria: Criteria) -> DataProvider.Result {
         let rawInput = criteria.rawInput.components(separatedBy: CharacterSet.whitespacesAndNewlines).joined()
-        if rawInput.characters.count > 1 || rawInput.characters.count == 0 {
+        if rawInput.count > 1 || rawInput.count == 0 {
             return ErrorResult(error: "Input didn't meet expectations")
         }
         
-        return DebugResult(character: rawInput.characters.first!)
+        return DebugResult(character: rawInput.first!)
     }
     
     
