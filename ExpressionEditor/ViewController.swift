@@ -152,6 +152,7 @@ class ViewController: UIViewController {
 
         //Find positional info for the text and add the label to the gray view.
         var labels = [UILabel]()
+        var firstIterate = true
         textEditor.layoutManager.enumerateLineFragments(forGlyphRange: glyphRange) { (firstRect, secondRect, container, range, bool) in
             if let r = Range(range) {
                 let start = self.textEditor.text.index(self.textEditor.text.startIndex, offsetBy: r.lowerBound)
@@ -159,7 +160,7 @@ class ViewController: UIViewController {
                 let substringRange = start..<end
                 let string = String(self.textEditor.text[substringRange])
                
-                if let input = self.parse(string) {
+                if let input = self.parse(string, first: firstIterate) {
                     let rect = secondRect.offsetBy(dx: 10, dy: 0)
                     let finalRect = CGRect(x: rect.origin.x, y: rect.origin.y, width: self.resultsPane.bounds.width, height: CGFloat(ceilf(Float(rect.size.height))))
                     let view = UILabel(frame: finalRect)
@@ -168,6 +169,7 @@ class ViewController: UIViewController {
                     view.isUserInteractionEnabled = true
                     view.backgroundColor = .gray
                     labels.append(view)
+                    firstIterate = false
                 }
             }
         }
@@ -184,8 +186,10 @@ class ViewController: UIViewController {
         }
     }
     
-    var results: [DataResult] = []
-    func parse(_ data: String) -> String? {
+    func parse(_ data: String, first: Bool) -> String? {
+        if first {
+            providerSupplier.beginParse()
+        }
         let result = providerSupplier.parse(data)
         return result?.initialResult
     }
