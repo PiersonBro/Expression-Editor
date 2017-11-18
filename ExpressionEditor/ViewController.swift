@@ -162,7 +162,7 @@ class ViewController: UIViewController {
                
                 if let input = self.parse(string, first: firstIterate) {
                     let rect = secondRect.offsetBy(dx: 10, dy: 0)
-                    let finalRect = CGRect(x: rect.origin.x, y: rect.origin.y, width: self.resultsPane.bounds.width, height: CGFloat(ceilf(Float(rect.size.height))))
+                    let finalRect = CGRect(x: rect.origin.x, y: rect.origin.y, width: self.resultsPane.bounds.width / 2, height: CGFloat(ceilf(Float(rect.size.height))))
                     let view = UILabel(frame: finalRect)
                     view.font = .systemFont(ofSize: 15)
                     view.text = input
