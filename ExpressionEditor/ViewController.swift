@@ -62,19 +62,8 @@ class ViewController: UIViewController {
     }
     
     override func viewDidLayoutSubviews() {
-        textEditor.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
-        resultsPane.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
-        configureStatusBarView()
-    }
-    
-    func configureStatusBarView() {
-        statusBarView.backgroundColor = .white
-        statusBarView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(statusBarView)
-        statusBarView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        statusBarView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-        statusBarView.bottomAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
-        statusBarView.topAnchor.constraint(equalTo: topLayoutGuide.topAnchor).isActive = true
+        textEditor.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        resultsPane.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
     }
     
     func configureResultsPaneLayout() {
@@ -162,7 +151,7 @@ class ViewController: UIViewController {
                
                 if let input = self.parse(string, first: firstIterate) {
                     let rect = secondRect.offsetBy(dx: 10, dy: 0)
-                    let finalRect = CGRect(x: rect.origin.x, y: rect.origin.y, width: self.resultsPane.bounds.width / 2, height: CGFloat(ceilf(Float(rect.size.height))))
+                    let finalRect = CGRect(x: rect.origin.x, y: rect.origin.y, width: self.resultsPane.bounds.width, height: CGFloat(ceilf(Float(rect.size.height))))
                     let view = UILabel(frame: finalRect)
                     view.font = .systemFont(ofSize: 15)
                     view.text = input
