@@ -81,7 +81,7 @@ class ViewController: UIViewController {
     
     var previousPoint = CGPoint()
     @objc func dragResultsView(gestureRecognizer: UIPanGestureRecognizer) {
-        let p1 = gestureRecognizer.location(in: resultsPane)
+        let p1 = gestureRecognizer.location(in: view)
         let distance: CGFloat = { () -> CGFloat in
             let magnitude = abs(p1.x - self.previousPoint.x)
             let vector: CGFloat
