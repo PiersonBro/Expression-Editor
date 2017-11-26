@@ -9,9 +9,10 @@
 import UIKit
 import VascularKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UIGestureRecognizerDelegate {
     let textEditor = UITextView(frame: CGRect())
     let resultsPane = UIView(frame: CGRect())
+    let validDragArea = UIView()
     var drag: UIPanGestureRecognizer? = nil
     var teams = [Team]()
     var providerSupplier = ProviderSupplier()
@@ -43,6 +44,7 @@ class ViewController: UIViewController {
     func configureDragGestureRecognizer() {
         let SEL = #selector(dragResultsView(gestureRecognizer:))
         drag = UIPanGestureRecognizer(target: self, action: SEL)
+        drag?.delegate = self
         view.addGestureRecognizer(drag!)
     }
     
@@ -76,6 +78,27 @@ class ViewController: UIViewController {
         let centerXConstriant = NSLayoutConstraint(item: resultsPane, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1.7, constant: 0)
         centerXConstriant.isActive = true
         centerXConstriant.identifier = "centerXRP"
+        configureValidDragArea()
+    }
+    
+    var validAreaConstraints = [NSLayoutConstraint]()
+    func configureValidDragArea() {
+        resultsPane.addSubview(validDragArea)
+        validDragArea.translatesAutoresizingMaskIntoConstraints = false
+        validDragArea.isUserInteractionEnabled = false
+        validDragArea.alpha = 0.0
+        validDragArea.isOpaque = false
+        if validAreaConstraints.count == 0 {
+            validAreaConstraints.append(validDragArea.leftAnchor.constraint(equalTo: resultsPane.leftAnchor))
+            validAreaConstraints.append(validDragArea.heightAnchor.constraint(equalTo: resultsPane.heightAnchor))
+            validAreaConstraints.append(validDragArea.widthAnchor.constraint(equalTo: resultsPane.widthAnchor, multiplier: 0.2))
+        }
+        validAreaConstraints.forEach { $0.isActive = true }
+        
+    }
+    
+    func deactivateValidDragArea() {
+        validAreaConstraints.forEach { $0.isActive = false }
     }
     
     var previousPoint = CGPoint()
@@ -96,6 +119,7 @@ class ViewController: UIViewController {
         
         switch gestureRecognizer.state {
             case .began:
+                deactivateValidDragArea()
                 previousPoint = gestureRecognizer.location(in: resultsPane)
             case .changed:
                 origin.x = origin.x + distance
@@ -120,6 +144,7 @@ class ViewController: UIViewController {
                     centerXConstriant.identifier = "centerXRP"
                     self.view.layoutIfNeeded()
                     self.process()
+                    self.configureValidDragArea()
                 }
             
             default:
@@ -127,6 +152,14 @@ class ViewController: UIViewController {
         }
         
         previousPoint = p1
+    }
+    
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if validDragArea.frame.contains(gestureRecognizer.location(in: validDragArea)) {
+            return true
+        } else {
+            return false
+        }
     }
     
     var dragAdded = false
