@@ -12,7 +12,6 @@ import VascularKit
 class ViewController: UIViewController {
     let textEditor = UITextView(frame: CGRect())
     let resultsPane = UIView(frame: CGRect())
-    let statusBarView = UIView(frame: CGRect())
     var drag: UIPanGestureRecognizer? = nil
     var teams = [Team]()
     var providerSupplier = ProviderSupplier()
@@ -107,7 +106,7 @@ class ViewController: UIViewController {
                     self.view.constraints.filter {
                         $0.identifier == "centerXRP"
                     }.forEach {
-                            self.view.removeConstraint($0)
+                        self.view.removeConstraint($0)
                     }
               
                     origin.x = origin.x + distance
@@ -157,6 +156,8 @@ class ViewController: UIViewController {
                     view.text = input
                     view.isUserInteractionEnabled = true
                     view.backgroundColor = .gray
+                    view.sizeToFit()
+                    view.frame = CGRect(x: rect.origin.x, y: rect.origin.y, width: view.frame.width, height: CGFloat(ceilf(Float(rect.size.height))))
                     labels.append(view)
                     firstIterate = false
                 }
