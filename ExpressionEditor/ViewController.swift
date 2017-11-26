@@ -9,7 +9,7 @@
 import UIKit
 import VascularKit
 
-class ViewController: UIViewController, UIGestureRecognizerDelegate {
+class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInteractionDelegate {
     let textEditor = UITextView(frame: CGRect())
     let resultsPane = UIView(frame: CGRect())
     let validDragArea = UIView()
@@ -203,7 +203,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         if !dragAdded {
             let dragInteraction = UIDragInteraction(delegate: self)
-            dragInteraction.allowsSimultaneousRecognitionDuringLift = true
             resultsPane.addInteraction(dragInteraction)
             dragAdded = true
         }
@@ -217,6 +216,28 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         return result?.initialResult
     }
     
+    public func dragInteraction(_ interaction: UIDragInteraction, itemsForBeginning session: UIDragSession) -> [UIDragItem] {
+        if let view = resultsPane.hitTest(session.location(in: interaction.view!), with: nil) {
+            if let label = view as? UILabel {
+                let item = "L\(String(describing: providerSupplier.lineNumber(result: label.text!)))" as NSString
+                let itemProvider = NSItemProvider(object: item)
+                let dragItem = UIDragItem(itemProvider: itemProvider)
+                return [dragItem]
+            }
+        }
+        
+        return []
+    }
+    
+    public func dragInteraction(_ interaction: UIDragInteraction, previewForLifting item: UIDragItem, session: UIDragSession) -> UITargetedDragPreview? {
+        let label = resultsPane.hitTest(session.location(in: interaction.view!), with: nil) as! UILabel
+        return UITargetedDragPreview(view: label)
+    }
+    
+    func dragInteraction(_ interaction: UIDragInteraction, session: UIDragSession, didEndWith operation: UIDropOperation) {
+        configureValidDragArea()
+    }
+
     /*func sanatize(_ string: String) -> String? {
      if string.isEmpty || string == "\n" {
      return nil

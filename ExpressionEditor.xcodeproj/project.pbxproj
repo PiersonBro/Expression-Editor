@@ -18,7 +18,6 @@
 		202C2E4E1E0F8F020068CB52 /* StringScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202C2E4D1E0F8F020068CB52 /* StringScore.swift */; };
 		20303E6A1F38E4AA00EA1728 /* VascularKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 209853FF1F36A13100C41BB9 /* VascularKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		208CFFB21F3D9E60000162BD /* TeamProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208CFFB11F3D9E60000162BD /* TeamProvider.swift */; };
-		208CFFB51F3EE06E000162BD /* LabelDragInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208CFFB41F3EE06E000162BD /* LabelDragInteraction.swift */; };
 		209BE38D1DB8429F00352C3B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209BE38C1DB8429F00352C3B /* AppDelegate.swift */; };
 		209BE38F1DB8429F00352C3B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209BE38E1DB8429F00352C3B /* ViewController.swift */; };
 		209BE3941DB8429F00352C3B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 209BE3931DB8429F00352C3B /* Assets.xcassets */; };
@@ -91,7 +90,6 @@
 		202C2E4B1E0F8E640068CB52 /* HTMLStripper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTMLStripper.swift; sourceTree = "<group>"; };
 		202C2E4D1E0F8F020068CB52 /* StringScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringScore.swift; sourceTree = "<group>"; };
 		208CFFB11F3D9E60000162BD /* TeamProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamProvider.swift; sourceTree = "<group>"; };
-		208CFFB41F3EE06E000162BD /* LabelDragInteraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelDragInteraction.swift; sourceTree = "<group>"; };
 		209853F91F36A13100C41BB9 /* VascularKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = VascularKit.xcodeproj; path = VascularKit/VascularKit.xcodeproj; sourceTree = "<group>"; };
 		209BE3891DB8429F00352C3B /* ExpressionEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExpressionEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		209BE38C1DB8429F00352C3B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -158,7 +156,6 @@
 				2010217B1F4CAFC700A9A62A /* DebugProvider.swift */,
 				209BE38C1DB8429F00352C3B /* AppDelegate.swift */,
 				209BE38E1DB8429F00352C3B /* ViewController.swift */,
-				208CFFB41F3EE06E000162BD /* LabelDragInteraction.swift */,
 				20C3EF091E7D968D00C75805 /* Action.swift */,
 				208CFFB11F3D9E60000162BD /* TeamProvider.swift */,
 				202C2E4D1E0F8F020068CB52 /* StringScore.swift */,
@@ -325,7 +322,6 @@
 				209BE38F1DB8429F00352C3B /* ViewController.swift in Sources */,
 				209BE38D1DB8429F00352C3B /* AppDelegate.swift in Sources */,
 				202C2E4E1E0F8F020068CB52 /* StringScore.swift in Sources */,
-				208CFFB51F3EE06E000162BD /* LabelDragInteraction.swift in Sources */,
 				208CFFB21F3D9E60000162BD /* TeamProvider.swift in Sources */,
 				202C2E461E0F59CB0068CB52 /* Subject.swift in Sources */,
 				202C2E4C1E0F8E640068CB52 /* HTMLStripper.swift in Sources */,
