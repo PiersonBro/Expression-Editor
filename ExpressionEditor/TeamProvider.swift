@@ -35,4 +35,9 @@ public class TeamProvider: DataProvider {
         
         return TeamResult(properties: [""], initialResult: "")
     }
+    
+    public func execute(criteria: Criteria, completionHandler: (DataProvider.Result) -> ()) {
+        let result = execute(criteria: criteria)
+        completionHandler(result)
+    }
 }

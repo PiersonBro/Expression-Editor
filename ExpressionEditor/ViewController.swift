@@ -86,11 +86,11 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
         resultsPane.addSubview(validDragArea)
         validDragArea.translatesAutoresizingMaskIntoConstraints = false
         validDragArea.isUserInteractionEnabled = false
-        #if DEBUG {
+        #if DEBUG
             validDragArea.alpha = 0.2
             validDragArea.backgroundColor = .red
             validDragArea.isOpaque = false
-        }
+        #endif
         if validAreaConstraints.count == 0 {
             validAreaConstraints.append(validDragArea.leftAnchor.constraint(equalTo: resultsPane.leftAnchor))
             validAreaConstraints.append(validDragArea.heightAnchor.constraint(equalTo: resultsPane.heightAnchor))
