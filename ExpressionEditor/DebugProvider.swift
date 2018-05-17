@@ -23,7 +23,7 @@ struct DebugProvider: DataProvider {
         return DebugResult(character: rawInput.first!)
     }
     
-    func execute(criteria: Criteria, completionHandler: (DataProvider.Result) -> ()) {
+    func execute(criteria: Criteria, completionHandler: @escaping (DataProvider.Result) -> ()) {
         let result = execute(criteria: criteria)
         completionHandler(result)
     }

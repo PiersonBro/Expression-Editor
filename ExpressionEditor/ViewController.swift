@@ -8,6 +8,7 @@
 
 import UIKit
 import VascularKit
+import FangraphsDataKit
 
 class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInteractionDelegate {
     let textEditor = UITextView(frame: CGRect())
@@ -29,6 +30,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
     func registerProviders() {
         providerSupplier.register(type: MathProvider.self)
         providerSupplier.register(type: DebugProvider.self)
+        providerSupplier.register(type: DataInterchangeLoader.self)
+        providerSupplier.register(type: FangraphsProvider.self)
+//        providerSupplier.register(type: TeamProvider.self)
         //FIXME: Add Teams.
     }
     
@@ -175,8 +179,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
         let glyphRange = textEditor.layoutManager.glyphRange(for: textEditor.layoutManager.textContainers.first!)
 
         //Find positional info for the text and add the label to the gray view.
-        var labels = [UILabel]()
-        var firstIterate = true
         textEditor.layoutManager.enumerateLineFragments(forGlyphRange: glyphRange) { (firstRect, secondRect, container, range, bool) in
             if let r = Range(range) {
                 let start = self.textEditor.text.index(self.textEditor.text.startIndex, offsetBy: r.lowerBound)
@@ -184,24 +186,23 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
                 let substringRange = start..<end
                 let string = String(self.textEditor.text[substringRange])
                
-                if let input = self.parse(string, first: firstIterate) {
-                    let rect = secondRect.offsetBy(dx: 10, dy: 0)
-                    let finalRect = CGRect(x: rect.origin.x, y: rect.origin.y, width: self.resultsPane.bounds.width, height: CGFloat(ceilf(Float(rect.size.height))))
-                    let view = UILabel(frame: finalRect)
-                    view.font = .systemFont(ofSize: 15)
-                    view.text = input
-                    view.isUserInteractionEnabled = true
-                    view.backgroundColor = .gray
-                    view.sizeToFit()
-                    view.frame = CGRect(x: rect.origin.x, y: rect.origin.y, width: view.frame.width, height: CGFloat(ceilf(Float(rect.size.height))))
-                    labels.append(view)
-                    firstIterate = false
+                self.parse(string) { input in
+                    if let input = input {
+                        DispatchQueue.main.async {
+                            let rect = secondRect.offsetBy(dx: 10, dy: 0)
+                            let finalRect = CGRect(x: rect.origin.x, y: rect.origin.y, width: self.resultsPane.bounds.width, height: CGFloat(ceilf(Float(rect.size.height))))
+                            let label = UILabel(frame: finalRect)
+                            label.font = .systemFont(ofSize: 15)
+                            label.text = input
+                            label.isUserInteractionEnabled = true
+                            label.backgroundColor = .gray
+                            label.sizeToFit()
+                            label.frame = CGRect(x: rect.origin.x, y: rect.origin.y, width: label.frame.width, height: CGFloat(ceilf(Float(rect.size.height))))
+                            self.resultsPane.addSubview(label)
+                        }
+                    }
                 }
             }
-        }
-        
-        labels.forEach {
-            resultsPane.addSubview($0)
         }
         
         if !dragAdded {
@@ -211,12 +212,15 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
         }
     }
     
-    func parse(_ data: String, first: Bool) -> String? {
-        if first {
+    var firstIteration = true
+    func parse(_ data: String, result: @escaping (String?) -> ()) {
+        if firstIteration {
             providerSupplier.beginParse()
+            firstIteration = false
         }
-        let result = providerSupplier.parse(data)
-        return result?.initialResult
+        providerSupplier.parse(data) {
+            result($0?.initialResult)
+        }
     }
     
     public func dragInteraction(_ interaction: UIDragInteraction, itemsForBeginning session: UIDragSession) -> [UIDragItem] {

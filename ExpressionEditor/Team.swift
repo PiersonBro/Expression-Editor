@@ -45,7 +45,7 @@ struct Team {
         
         session.dataTask(with: request) { (data, response, error) in
             if let data = data {
-                let teams = JSON.parse(NSString(data: data, encoding: String.Encoding.utf8.rawValue)! as String).array!.flatMap { json -> Team? in
+                let teams = JSON.parse(NSString(data: data, encoding: String.Encoding.utf8.rawValue)! as String).array!.compactMap{ json -> Team? in
                     return Team(json: json)
                 }
                 completionHandler(teams)
