@@ -17,10 +17,10 @@ struct DebugProvider: DataProvider {
     func execute(criteria: Criteria) -> DataProvider.Result {
         let rawInput = criteria.rawInput.components(separatedBy: CharacterSet.whitespacesAndNewlines).joined()
         if rawInput.count > 1 || rawInput.count == 0 {
-            return ErrorResult(error: "Input didn't meet expectations", inputCriteria: criteria)
+            return ErrorResult(error: "Input didn't meet expectations")
         }
         
-        return DebugResult(character: rawInput.first!, inputCriteria: criteria)
+        return DebugResult(character: rawInput.first!)
     }
     
     func execute(criteria: Criteria, completionHandler: @escaping (DataProvider.Result) -> ()) {
@@ -35,12 +35,10 @@ struct DebugResult: DataResult {
     let initialResult: String
     let aheadChar: Character?
     let behindChar: Character?
-    let inputCriteria: Criteria
     
-    init(character: Character, inputCriteria: Criteria) {
+    init(character: Character) {
         self.character = character
         self.initialResult = String(character)
-        self.inputCriteria = inputCriteria
         (self.aheadChar, self.behindChar) = DebugResult.adjacentCharacters(character: character)
         properties = []
     }
