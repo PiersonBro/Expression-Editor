@@ -176,31 +176,34 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
             $0.removeFromSuperview()
         }
         
-        let glyphRange = textEditor.layoutManager.glyphRange(for: textEditor.layoutManager.textContainers.first!)
-
         //Find positional info for the text and add the label to the gray view.
+        let glyphRange = textEditor.layoutManager.glyphRange(for: textEditor.layoutManager.textContainers.first!)
         textEditor.layoutManager.enumerateLineFragments(forGlyphRange: glyphRange) { (firstRect, secondRect, container, range, bool) in
             if let r = Range(range) {
                 let start = self.textEditor.text.index(self.textEditor.text.startIndex, offsetBy: r.lowerBound)
                 let end = self.textEditor.text.index(self.textEditor.text.startIndex, offsetBy: r.upperBound)
                 let substringRange = start..<end
                 let string = String(self.textEditor.text[substringRange])
-               
-                self.parse(string) { input in
-                    if let input = input {
-                        DispatchQueue.main.async {
-                            let rect = secondRect.offsetBy(dx: 10, dy: 0)
-                            let finalRect = CGRect(x: rect.origin.x, y: rect.origin.y, width: self.resultsPane.bounds.width, height: CGFloat(ceilf(Float(rect.size.height))))
-                            let label = UILabel(frame: finalRect)
-                            label.font = .systemFont(ofSize: 15)
-                            label.text = input
-                            label.isUserInteractionEnabled = true
-                            label.backgroundColor = .gray
-                            label.sizeToFit()
-                            label.frame = CGRect(x: rect.origin.x, y: rect.origin.y, width: label.frame.width, height: CGFloat(ceilf(Float(rect.size.height))))
-                            self.resultsPane.addSubview(label)
-                        }
+            }
+        }
+        
+        providerSupplier.parse(textEditor.text) { input in
+            if let input = input {
+                DispatchQueue.main.async {
+                    let linePositionRectIndex = lineFragmentLocation.index {
+                        $0 === input.inputCriteria
                     }
+                    let linePositionRect = lineFragmentLocation[linePositionRectIndex]
+                    let rect = linePositionRect.offsetBy(dx: 10, dy: 0)
+                    let finalRect = CGRect(x: rect.origin.x, y: rect.origin.y, width: self.resultsPane.bounds.width, height: CGFloat(ceilf(Float(rect.size.height))))
+                    let label = UILabel(frame: finalRect)
+                    label.font = .systemFont(ofSize: 15)
+                    label.text = input.initialResult
+                    label.isUserInteractionEnabled = true
+                    label.backgroundColor = .gray
+                    label.sizeToFit()
+                    label.frame = CGRect(x: rect.origin.x, y: rect.origin.y, width: label.frame.width, height: CGFloat(ceilf(Float(rect.size.height))))
+                    self.resultsPane.addSubview(label)
                 }
             }
         }
@@ -209,17 +212,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
             let dragInteraction = UIDragInteraction(delegate: self)
             resultsPane.addInteraction(dragInteraction)
             dragAdded = true
-        }
-    }
-    
-    var firstIteration = true
-    func parse(_ data: String, result: @escaping (String?) -> ()) {
-        if firstIteration {
-            providerSupplier.beginParse()
-            firstIteration = false
-        }
-        providerSupplier.parse(data) {
-            result($0?.initialResult)
         }
     }
     
@@ -244,52 +236,4 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
     func dragInteraction(_ interaction: UIDragInteraction, session: UIDragSession, didEndWith operation: UIDropOperation) {
         configureValidDragArea()
     }
-
-    /*func sanatize(_ string: String) -> String? {
-     if string.isEmpty || string == "\n" {
-     return nil
-     }
-     
-     return string
-     }
-     func parse(_ data: String) -> String? {
-        guard var data = sanatize(data) else {
-            return nil
-        }
-        
-        guard self.teams.isEmpty != true else {
-            return nil
-        }
-        
-        //FIXME: Have a more general solution to this problem.
-        if let range = data.range(of: "+") {
-            data.insert(" ", at: range.lowerBound)
-        } else if let range = data.range(of: "-") {
-            data.insert(" ", at: range.lowerBound)
-        }
-        
-        let strings = data.components(separatedBy: " ")
-        let tags = data.linguisticTags(in: data.startIndex..<data.endIndex, scheme: NSLinguisticTagScheme.lexicalClass.rawValue, options: .omitWhitespace, orthography: nil)
-        
-        let words = zip(strings, tags).flatMap { (arg) -> Criterion.Word? in
-            
-            let (word, tag) = arg
-            if let grammer = Grammer(rawValue: tag) {
-                return (word, grammer)
-            } else {
-                return nil
-            }
-        }
-        
-        if let subject = Subject(words: words, teams: teams) {
-            var string = ""
-            subject.execute() { result in
-                string = result
-            }
-            return string
-        } else {
-            return "Error: Could Not Read Input."
-            
-        }
-    }*/
 }
