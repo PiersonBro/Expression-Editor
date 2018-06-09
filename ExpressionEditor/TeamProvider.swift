@@ -14,6 +14,8 @@ public struct TeamResult: DataResult {
     
     public let initialResult: String
     
+    public var inputCriteria: Criteria
+    
     public func getResult(property: String) -> String {
         return ""
     }
@@ -33,7 +35,7 @@ public class TeamProvider: DataProvider {
     
     public func execute(criteria: Criteria) -> DataProvider.Result {
         
-        return TeamResult(properties: [""], initialResult: "")
+        return TeamResult(properties: [""], initialResult: "", inputCriteria: criteria)
     }
     
     public func execute(criteria: Criteria, completionHandler: @escaping (DataProvider.Result) -> ()) {
