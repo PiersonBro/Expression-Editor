@@ -178,22 +178,29 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
         
         //Find positional info for the text and add the label to the gray view.
         let glyphRange = textEditor.layoutManager.glyphRange(for: textEditor.layoutManager.textContainers.first!)
+        var lineFragmentLocation = [Identity: CGRect]()
+        var identities: [Identity] = [Identity]()
         textEditor.layoutManager.enumerateLineFragments(forGlyphRange: glyphRange) { (firstRect, secondRect, container, range, bool) in
             if let r = Range(range) {
                 let start = self.textEditor.text.index(self.textEditor.text.startIndex, offsetBy: r.lowerBound)
                 let end = self.textEditor.text.index(self.textEditor.text.startIndex, offsetBy: r.upperBound)
                 let substringRange = start..<end
-                let string = String(self.textEditor.text[substringRange])
+                let inputString = String(self.textEditor.text[substringRange])
+                if self.providerSupplier.canCreateCriteria(inputString) {
+                    let identity = Identity(inputString)
+                    identities.append(identity)
+                    lineFragmentLocation[identity] = secondRect
+                }
             }
         }
         
-        providerSupplier.parse(textEditor.text) { input in
+        let keys = Array(lineFragmentLocation.keys)
+        providerSupplier.parse(input: textEditor.text, identities: identities) { input in
             if let input = input {
                 DispatchQueue.main.async {
-                    let linePositionRectIndex = lineFragmentLocation.index {
-                        $0 === input.inputCriteria
-                    }
-                    let linePositionRect = lineFragmentLocation[linePositionRectIndex]
+                    let linePositionRectIndex = keys.index { $0 === input.inputCriteria.identity }
+                    let linePositionCriteria = keys[linePositionRectIndex!]
+                    let linePositionRect = lineFragmentLocation[linePositionCriteria]!
                     let rect = linePositionRect.offsetBy(dx: 10, dy: 0)
                     let finalRect = CGRect(x: rect.origin.x, y: rect.origin.y, width: self.resultsPane.bounds.width, height: CGFloat(ceilf(Float(rect.size.height))))
                     let label = UILabel(frame: finalRect)
