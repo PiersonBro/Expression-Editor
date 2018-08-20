@@ -195,17 +195,17 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
         }
         
         let keys = Array(lineFragmentLocation.keys)
-        providerSupplier.parse(input: textEditor.text, identities: identities) { input in
-            if let input = input {
+        providerSupplier.parse(input: textEditor.text, identities: identities) { token in
+            if let token = token {
                 DispatchQueue.main.async {
-                    let linePositionRectIndex = keys.index { $0 === input.inputCriteria.identity }
+                    let linePositionRectIndex = keys.index { $0 === token.identity }
                     let linePositionCriteria = keys[linePositionRectIndex!]
                     let linePositionRect = lineFragmentLocation[linePositionCriteria]!
                     let rect = linePositionRect.offsetBy(dx: 10, dy: 0)
                     let finalRect = CGRect(x: rect.origin.x, y: rect.origin.y, width: self.resultsPane.bounds.width, height: CGFloat(ceilf(Float(rect.size.height))))
                     let label = UILabel(frame: finalRect)
                     label.font = .systemFont(ofSize: 15)
-                    label.text = input.initialResult
+                    label.text = token.result!.initialResult
                     label.isUserInteractionEnabled = true
                     label.backgroundColor = .gray
                     label.sizeToFit()
