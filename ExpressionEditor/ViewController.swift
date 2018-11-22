@@ -32,8 +32,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
         providerSupplier.register(type: DebugProvider.self)
         providerSupplier.register(type: DataInterchangeLoader.self)
         providerSupplier.register(type: FangraphsProvider.self)
-//        providerSupplier.register(type: TeamProvider.self)
-        //FIXME: Add Teams.
     }
     
     //FIXME: Factor this out.
@@ -56,6 +54,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
         view.backgroundColor = .white
         view.addSubview(textEditor)
         textEditor.translatesAutoresizingMaskIntoConstraints = false
+        textEditor.autocapitalizationType = .none;
         
         textEditor.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         configureResultsPaneLayout()
@@ -205,7 +204,11 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
                     let finalRect = CGRect(x: rect.origin.x, y: rect.origin.y, width: self.resultsPane.bounds.width, height: CGFloat(ceilf(Float(rect.size.height))))
                     let label = UILabel(frame: finalRect)
                     label.font = .systemFont(ofSize: 15)
-                    label.text = token.result!.initialResult
+                    if let resultProperty = token.evaluateResult() {
+                        label.text = resultProperty
+                    } else {
+                        label.text = token.result!.initialResult
+                    }
                     label.isUserInteractionEnabled = true
                     label.backgroundColor = .gray
                     label.sizeToFit()
