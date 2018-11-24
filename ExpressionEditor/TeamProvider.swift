@@ -16,7 +16,7 @@ public struct TeamResult: DataResult {
     
     public var inputCriteria: Criteria
     
-    public func getResult(property: String) -> String {
+    public func getResult(property: String) -> DataResult {
         return ""
     }
 }
