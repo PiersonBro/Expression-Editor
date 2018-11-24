@@ -69,7 +69,7 @@ struct DebugResult: DataResult {
         
     }
     
-    func getResult(property: String) -> DataResult {
+    func getResult(property: String) -> String {
         return initialResult
     }
 
