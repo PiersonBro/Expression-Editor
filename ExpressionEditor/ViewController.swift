@@ -197,7 +197,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
         providerSupplier.parse(input: textEditor.text, identities: identities) { token in
             if let token = token {
                 DispatchQueue.main.async {
-                    let linePositionRectIndex = keys.index { $0 === token.identity }
+                    let linePositionRectIndex = keys.firstIndex { $0 === token.identity }
                     let linePositionCriteria = keys[linePositionRectIndex!]
                     let linePositionRect = lineFragmentLocation[linePositionCriteria]!
                     let rect = linePositionRect.offsetBy(dx: 10, dy: 0)

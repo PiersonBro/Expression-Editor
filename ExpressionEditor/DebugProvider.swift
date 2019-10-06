@@ -47,7 +47,7 @@ struct DebugResult: DataResult {
     
     private static func adjacentCharacters(character: Character) -> (Character?, Character?) {
         let alphabet: [Character] = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v","w", "x", "y", "z"]
-        if let index = alphabet.index(of: character) {
+        if let index = alphabet.firstIndex(of: character) {
             let aheadIndex = index + 1
             let behindIndex = index - 1
             let aheadChar: Character?

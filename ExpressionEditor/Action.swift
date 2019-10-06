@@ -40,7 +40,7 @@ struct PythagAction: ActionType {
         let line = lines.filter {
             $0.contains("Pythagorean W-L")
             }.first!
-        let index = lines.index(of: line)
+        let index = lines.firstIndex(of: line)
         let parseLine = lines[index! + 1]
         let htmlStripper = HTMLStripper(html: parseLine)
         
@@ -64,7 +64,7 @@ struct RecordAction: ActionType {
         let line = lines.filter {
             $0.contains("<strong>Record:</strong>")
             }.first!
-        let index = lines.index(of: line)
+        let index = lines.firstIndex(of: line)
         let parseLine = lines[index! + 1]
         let htmlStripper = HTMLStripper(html: parseLine)
         
