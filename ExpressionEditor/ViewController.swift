@@ -21,7 +21,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTextEditorLayout()
-        configureResultsPaneLayout()
         configureDragGestureRecognizer()
         loadTeamsData()
         registerProviders()
@@ -59,7 +58,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
         textEditor.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         configureResultsPaneLayout()
         textEditor.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        textEditor.rightAnchor.constraint(equalTo: resultsPane.leftAnchor).isActive = true
         
         resultsPane.layer.masksToBounds = true
         resultsPane.layer.cornerRadius = 15.0
@@ -70,6 +68,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
         resultsPane.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
     }
     
+    var dragEdgeConstraint: NSLayoutConstraint? = nil
     func configureResultsPaneLayout() {
         view.addSubview(resultsPane)
         resultsPane.translatesAutoresizingMaskIntoConstraints = false
@@ -78,17 +77,20 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
         resultsPane.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         let rightAnchor = resultsPane.rightAnchor.constraint(equalTo: view.rightAnchor)
         rightAnchor.isActive = true
-        let centerXConstriant = NSLayoutConstraint(item: resultsPane, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1.7, constant: 0)
-        centerXConstriant.isActive = true
-        centerXConstriant.identifier = "centerXRP"
+        
+        dragEdgeConstraint = NSLayoutConstraint(item: resultsPane, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1.7, constant: 0)
+        dragEdgeConstraint!.isActive = true
+        dragEdgeConstraint = rightAnchor
         configureValidDragArea()
     }
     
     var validAreaConstraints = [NSLayoutConstraint]()
     func configureValidDragArea() {
-        resultsPane.addSubview(validDragArea)
-        validDragArea.translatesAutoresizingMaskIntoConstraints = false
-        validDragArea.isUserInteractionEnabled = false
+        if !validDragArea.isDescendant(of: resultsPane) {
+            resultsPane.addSubview(validDragArea)
+            validDragArea.translatesAutoresizingMaskIntoConstraints = false
+            validDragArea.isUserInteractionEnabled = false
+        }
         #if DEBUG
             validDragArea.alpha = 0.2
             validDragArea.backgroundColor = .red
@@ -107,59 +109,25 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
         validAreaConstraints.forEach { $0.isActive = false }
     }
     
-    var previousPoint = CGPoint()
+    var startingConstant: CGFloat = 0
     @objc func dragResultsView(gestureRecognizer: UIPanGestureRecognizer) {
-        let p1 = gestureRecognizer.location(in: view)
-        let distance: CGFloat = { () -> CGFloat in
-            let magnitude = abs(p1.x - self.previousPoint.x)
-            let vector: CGFloat
-            if gestureRecognizer.velocity(in: self.resultsPane).x > 0 {
-                vector = magnitude
-            } else {
-                vector = -(magnitude)
-            }
-            return vector
-        }()
-        var origin = resultsPane.frame.origin
-
-        
         switch gestureRecognizer.state {
             case .began:
+                startingConstant = dragEdgeConstraint!.constant
                 deactivateValidDragArea()
-                previousPoint = gestureRecognizer.location(in: resultsPane)
             case .changed:
-                origin.x = origin.x + distance
-                
-                resultsPane.frame = CGRect(origin: origin, size: CGSize(width: resultsPane.frame.height, height: resultsPane.frame.height))
+                let translation = gestureRecognizer.translation(in: self.view)
+                if (startingConstant - translation.x >= 0) {
+                    dragEdgeConstraint!.constant = startingConstant - translation.x
+                }
             case .ended:
-                UIView.animate(withDuration: 0) {
-                    self.view.constraints.filter {
-                        $0.identifier == "centerXRP"
-                    }.forEach {
-                        self.view.removeConstraint($0)
-                    }
-              
-                    origin.x = origin.x + distance
-                
-                    self.resultsPane.frame = CGRect(origin: origin, size: CGSize(width: self.resultsPane.frame.height, height: self.resultsPane.frame.height))
-                    let point = self.resultsPane.convert(self.resultsPane.bounds, to: self.view)
-                    let xMultiplier = (point.origin.x / self.view.frame.maxX) + 0.9998047352
-
-                    let centerXConstriant = NSLayoutConstraint(item: self.resultsPane, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: xMultiplier, constant: 0)
-                    centerXConstriant.isActive = true
-                    centerXConstriant.identifier = "centerXRP"
-                    self.view.layoutIfNeeded()
                     self.process()
                     self.configureValidDragArea()
-                }
-            
             default:
                 return
         }
-        
-        previousPoint = p1
     }
-    
+
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         if validDragArea.frame.contains(gestureRecognizer.location(in: validDragArea)) {
             return true
@@ -245,5 +213,10 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
     
     func dragInteraction(_ interaction: UIDragInteraction, session: UIDragSession, didEndWith operation: UIDropOperation) {
         configureValidDragArea()
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return false
+        
     }
 }
