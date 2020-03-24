@@ -23,6 +23,7 @@
 		209BE3971DB8429F00352C3B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 209BE3951DB8429F00352C3B /* LaunchScreen.storyboard */; };
 		209BE3A21DB8429F00352C3B /* ExpressionEditorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209BE3A11DB8429F00352C3B /* ExpressionEditorTests.swift */; };
 		20C3EF0A1E7D968D00C75805 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C3EF091E7D968D00C75805 /* Action.swift */; };
+		246E151D242184D60015983F /* DocumentBrowserDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 246E151C242184D60015983F /* DocumentBrowserDelegate.swift */; };
 		24D0712A20A1899500BA8B07 /* FangraphsDataKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24D0712720A1898C00BA8B07 /* FangraphsDataKit.framework */; };
 		24D0712B20A1899500BA8B07 /* FangraphsDataKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 24D0712720A1898C00BA8B07 /* FangraphsDataKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		24F10DFF20A2317C00E2A302 /* SwiftCSV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24F10DFE20A2317C00E2A302 /* SwiftCSV.framework */; };
@@ -100,6 +101,7 @@
 		209BE3A31DB8429F00352C3B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		20C3EF091E7D968D00C75805 /* Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		240C847221FEF7650078D1F7 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = FangraphsData/FangraphsDataKit/../../README.md; sourceTree = "<group>"; };
+		246E151C242184D60015983F /* DocumentBrowserDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentBrowserDelegate.swift; sourceTree = "<group>"; };
 		24D0712020A1898B00BA8B07 /* FangraphsData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FangraphsData.xcodeproj; path = FangraphsData/FangraphsData.xcodeproj; sourceTree = "<group>"; };
 		24F10DFE20A2317C00E2A302 /* SwiftCSV.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftCSV.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		24F10E0220A2318500E2A302 /* VascularKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = VascularKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -154,6 +156,7 @@
 			children = (
 				2010217B1F4CAFC700A9A62A /* DebugProvider.swift */,
 				209BE38C1DB8429F00352C3B /* AppDelegate.swift */,
+				246E151C242184D60015983F /* DocumentBrowserDelegate.swift */,
 				209BE38E1DB8429F00352C3B /* ViewController.swift */,
 				20C3EF091E7D968D00C75805 /* Action.swift */,
 				208CFFB11F3D9E60000162BD /* TeamProvider.swift */,
@@ -328,6 +331,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				246E151D242184D60015983F /* DocumentBrowserDelegate.swift in Sources */,
 				202C2E481E0F59E70068CB52 /* Criterion.swift in Sources */,
 				20C3EF0A1E7D968D00C75805 /* Action.swift in Sources */,
 				2010217C1F4CAFC700A9A62A /* DebugProvider.swift in Sources */,

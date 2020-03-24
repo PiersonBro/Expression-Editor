@@ -17,6 +17,16 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
     var drag: UIPanGestureRecognizer? = nil
     var teams = [Team]()
     var providerSupplier = ProviderSupplier()
+    let document: Document
+    
+    init(document: Document) {
+        self.document = document
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +34,22 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
         configureDragGestureRecognizer()
         loadTeamsData()
         registerProviders()
+        openDocument()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        document.close(completionHandler: nil)
+    }
+    
+    func openDocument() {
+        document.open { success in
+            if !success {
+                fatalError("Failed")
+            }
+            
+            self.document.undoManager = self.textEditor.undoManager
+            self.textEditor.text = self.document.text!
+        }
     }
     
     func registerProviders() {
@@ -53,14 +79,14 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
         view.backgroundColor = .white
         view.addSubview(textEditor)
         textEditor.translatesAutoresizingMaskIntoConstraints = false
-        textEditor.autocapitalizationType = .none;
-        
+        textEditor.autocapitalizationType = .none
+        textEditor.autocorrectionType = .no
         textEditor.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         configureResultsPaneLayout()
         textEditor.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        
-        resultsPane.layer.masksToBounds = true
-        resultsPane.layer.cornerRadius = 15.0
+        textEditor.rightAnchor.constraint(equalTo: resultsPane.leftAnchor).isActive = true
+        textEditor.backgroundColor = .white
+        textEditor.textColor = .black
     }
     
     override func viewDidLayoutSubviews() {
@@ -70,6 +96,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
     
     var dragEdgeConstraint: NSLayoutConstraint? = nil
     func configureResultsPaneLayout() {
+        //Update document state
+        //FIXME: Hacky!
+        textEditor.text = document.text
         view.addSubview(resultsPane)
         resultsPane.translatesAutoresizingMaskIntoConstraints = false
         resultsPane.backgroundColor = .gray
@@ -81,6 +110,8 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
         dragEdgeConstraint = NSLayoutConstraint(item: resultsPane, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1.7, constant: 0)
         dragEdgeConstraint!.isActive = true
         dragEdgeConstraint = rightAnchor
+        resultsPane.layer.masksToBounds = true
+        resultsPane.layer.cornerRadius = 15.0
         configureValidDragArea()
     }
     
@@ -102,7 +133,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
             validAreaConstraints.append(validDragArea.widthAnchor.constraint(equalTo: resultsPane.widthAnchor, multiplier: 0.2))
         }
         validAreaConstraints.forEach { $0.isActive = true }
-        
     }
     
     func deactivateValidDragArea() {
@@ -212,7 +242,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
     }
     
     func dragInteraction(_ interaction: UIDragInteraction, session: UIDragSession, didEndWith operation: UIDropOperation) {
-        configureValidDragArea()
+//        configureValidDragArea()
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {

@@ -12,12 +12,14 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    let delegate = DocumentBrowserDelegate()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow()
-        let viewController = ViewController(nibName: nil, bundle: nil)
-        window?.rootViewController = viewController
+        let documentBrowserViewController = UIDocumentBrowserViewController(forOpeningFilesWithContentTypes: ["public.plain-text"])
+        documentBrowserViewController.delegate = delegate
+//        let viewController = ViewController(nibName: nil, bundle: nil)
+        window?.rootViewController = documentBrowserViewController
         window?.makeKeyAndVisible()
         
         return true
