@@ -50,6 +50,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
     }
     
     override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         document.close(completionHandler: nil)
     }
     
