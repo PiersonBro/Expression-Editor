@@ -10,6 +10,16 @@ import UIKit
 import VascularKit
 import FangraphsDataKit
 
+class TextChangeManager: NSObject, UITextViewDelegate {
+    let document: Document
+    init(document: Document) {
+        self.document = document
+    }
+    func textViewDidChange(_ textView: UITextView) {
+        self.document.text = textView.text
+    }
+}
+
 class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInteractionDelegate {
     let textEditor = UITextView(frame: CGRect())
     let resultsPane = UIView(frame: CGRect())
@@ -18,9 +28,11 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
     var teams = [Team]()
     var providerSupplier = ProviderSupplier()
     let document: Document
+    let textChangeManager: TextChangeManager
     
     init(document: Document) {
         self.document = document
+        self.textChangeManager = TextChangeManager(document: self.document)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -87,6 +99,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UIDragInter
         textEditor.rightAnchor.constraint(equalTo: resultsPane.leftAnchor).isActive = true
         textEditor.backgroundColor = .white
         textEditor.textColor = .black
+        textEditor.delegate = textChangeManager
     }
     
     override func viewDidLayoutSubviews() {
