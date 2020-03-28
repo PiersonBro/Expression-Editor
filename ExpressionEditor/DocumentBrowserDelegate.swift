@@ -32,7 +32,6 @@ class Document: UIDocument {
     }
     
     override func load(fromContents contents: Any, ofType typeName: String?) throws {
-        print(typeName!)
         guard let contents = contents as? Data else {
             throw DocumentError.loadError
         }
@@ -40,22 +39,64 @@ class Document: UIDocument {
     }
 }
 
-
 class DocumentBrowserDelegate: NSObject, UIDocumentBrowserViewControllerDelegate {
     
-    var document: Document? = nil
     
     func documentBrowser(_ controller: UIDocumentBrowserViewController, didPickDocumentsAt documentURLs: [URL]) {
-        print(documentURLs)
         let document = Document(fileURL: documentURLs.first!)
-        self.document = document
         let vc = ViewController(document: document)
         controller.present(vc, animated: true, completion: nil)
     }
     
+    func documentBrowser(_ controller: UIDocumentBrowserViewController, didImportDocumentAt sourceURL: URL, toDestinationURL destinationURL: URL) {
+        let document = Document(fileURL: destinationURL)
+        let vc = ViewController(document: document)
+        controller.present(vc, animated: true, completion: nil)
+    }
+        
+    func documentBrowser(_ controller: UIDocumentBrowserViewController, failedToImportDocumentAt documentURL: URL, error: Error?) {
+        print("fail!", error!)
+        print(documentURL)
+        fatalError("Failed to import document: \(documentURL)")
+    }
+    
     func documentBrowser(_ controller: UIDocumentBrowserViewController, didRequestDocumentCreationWithHandler importHandler: @escaping (URL?, UIDocumentBrowserViewController.ImportMode) -> Void) {
+        getFileName(controller: controller) { string in
+            let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(string ?? "untitled").appendingPathExtension("txt")
+            let document = Document(fileURL: url)
+            document.text = ""
+            document.save(to: document.fileURL, for: .forCreating) { success in
+                guard success else {
+                    importHandler(nil, .none)
+                    return
+                }
+                document.close { closeSucess in
+                    guard closeSucess else {
+                        importHandler(nil, .none)
+                        return
+                    }
+                    importHandler(url, .move)
+                }
+            }
+        }
         
     }
     
+    func getFileName(controller: UIDocumentBrowserViewController, handler: @escaping (String?) -> ()) {
+        let alert = UIAlertController(title: "Enter File Name", message: "Please name your file." , preferredStyle: .alert)
+        alert.addTextField { textField in
+            textField.placeholder = "File name";
+        }
+        let alertAction = UIAlertAction(title: "Done", style: .default) { [weak alert] _ in
+            guard let alert = alert else {
+                return
+            }
+            let text = alert.textFields![0].text
+            handler(text)
+            
+        }
+        alert.addAction(alertAction)
+        controller.present(alert, animated: true)
+    }
     
 }
